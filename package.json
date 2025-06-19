@@ -1,0 +1,8 @@
+{
+  "name": "ghl-shipping-api",
+  "version": "1.0.0",
+  "description": "Shipping rate calculator for GoHighLevel using EasyPost",
+  "dependencies": {
+    "@easypost/api": "^6.0.0"
+  }
+}
