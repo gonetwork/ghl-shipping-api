@@ -17,12 +17,18 @@ exports.handler = async (event, context) => {
 
   try {
     const api = new EasyPost(process.env.EASYPOST_API_KEY);
-    const { to_zip, weight, from_zip } = JSON.parse(event.body);
+    // Now also accept length, width, height from the request body
+    const { to_zip, weight, from_zip, length, width, height } = JSON.parse(event.body);
 
     const shipment = await api.Shipment.create({
       to_address: { zip: to_zip, country: 'US' },
       from_address: { zip: from_zip || process.env.DEFAULT_FROM_ZIP, country: 'US' },
-      parcel: { weight: weight }
+      parcel: {
+        weight: weight,
+        length: length || 10, // default to 10 if not provided
+        width: width || 6,    // default to 6 if not provided
+        height: height || 4   // default to 4 if not provided
+      }
     });
 
     const upsRates = shipment.rates.filter(rate => rate.carrier === 'UPS')
